@@ -4,8 +4,7 @@
 
 import sys, os, re
 from dateutil import parser
-
-events_url = 'https://s3.amazonaws.com/yaroslavvb/logs/release-sixteen.04.events'
+import argparse
 
 import os
 import glob
@@ -18,7 +17,11 @@ import argparse
 parser = argparse.ArgumentParser(description='launch')
 parser.add_argument('--ignore-eval', action='store_true', 
                     help='ignore eval time')
+parser.add_argument('--events_path', default='file://', type=str,
+                    help='url of the training event file')
 args = parser.parse_args()
+
+events_url = 'file://' + os.path.join(os.getcwd(), args.events_path)
 
 def get_events(fname, x_axis='step'):
   """Returns event dictionary for given run, has form
@@ -69,9 +72,10 @@ def download_file(url):
   return data
 
 def main():
+
+  
   with open('/tmp/events', 'wb') as f:
     f.write(download_file(events_url))
-
 
   events_dict=get_events('/tmp/events', 'step')
   events_dict2 = get_events('/tmp/events', 'time')
