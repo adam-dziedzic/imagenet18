@@ -32,7 +32,7 @@ __Train__
 ulimit -n 4096
 
 python -m torch.distributed.launch \
---nproc_per_node=4 --nnodes=1 --node_rank=0 \
+--nproc_per_node=8 --nnodes=1 --node_rank=0 \
 training/train_imagenet_nv.py /mnt/data/data/imagenet \
 --fp16 --logdir ./ncluster/runs/lambda-blade --distributed --init-bn0 --no-bn-wd \
 --phases "[{'ep': 0, 'sz': 128, 'bs': 512, 'trndir': '-sz/160'}, {'ep': (0, 7), 'lr': (1.0, 2.0)}, {'ep': (7, 13), 'lr': (2.0, 0.25)}, {'ep': 13, 'sz': 224, 'bs': 224, 'trndir': '-sz/320', 'min_scale': 0.087}, {'ep': (13, 22), 'lr': (0.4375, 0.043750000000000004)}, {'ep': (22, 25), 'lr': (0.043750000000000004, 0.004375)}, {'ep': 25, 'sz': 288, 'bs': 128, 'min_scale': 0.5, 'rect_val': True}, {'ep': (25, 28), 'lr': (0.0025, 0.00025)}]"
