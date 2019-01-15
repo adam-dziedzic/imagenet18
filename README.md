@@ -1,9 +1,9 @@
-Lambda Notes on Reproducing on a Local Machine
+Lambda Notes on Reproducing Training on a Local Machine
 ===
 
 __Clone Repo__
 ```
-git clone https://github.com/chuanli11/imagenet18.git
+git clone https://github.com/lambdal/imagenet18.git
 cd imagenet18
 ```
 
@@ -37,7 +37,7 @@ training/train_imagenet_nv.py /mnt/data/data/imagenet \
 --fp16 --logdir ./ncluster/runs/lambda-blade --distributed --init-bn0 --no-bn-wd \
 --phases "[{'ep': 0, 'sz': 128, 'bs': 512, 'trndir': '-sz/160'}, {'ep': (0, 7), 'lr': (1.0, 2.0)}, {'ep': (7, 13), 'lr': (2.0, 0.25)}, {'ep': 13, 'sz': 224, 'bs': 224, 'trndir': '-sz/320', 'min_scale': 0.087}, {'ep': (13, 22), 'lr': (0.4375, 0.043750000000000004)}, {'ep': (22, 25), 'lr': (0.043750000000000004, 0.004375)}, {'ep': 25, 'sz': 288, 'bs': 128, 'min_scale': 0.5, 'rect_val': True}, {'ep': (25, 28), 'lr': (0.0025, 0.00025)}]"
 ```
-__ulimit__: to avoid "OSError: [Errno 24] Too many open files with 0.4.1".
+* __ulimit__: to avoid "OSError: [Errno 24] Too many open files with 0.4.1".
 __nproc_per_node__: number of GPUs on your local machine.  
 __nnodes__: number of node, set to one for training with a single machine.  
 __logdir__: directory for logging the results.  
@@ -52,6 +52,9 @@ __events_path__: path to the event file. Should be found inside of the __logdir_
 
 Original README
 ===
+
+
+
 
 Code to reproduce ImageNet in 18 minutes, by Andrew Shaw, Yaroslav Bulatov, and Jeremy Howard. High-level overview of techniques used is [here](http://fast.ai/2018/08/10/fastai-diu-imagenet/)
 
