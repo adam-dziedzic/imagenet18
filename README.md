@@ -25,6 +25,10 @@ wget https://s3.amazonaws.com/yaroslavvb/imagenet-sz.tar
 
 tar -xvf imagenet-data-sorted.tar -C /mnt/data/data
 tar -xvf imagenet-sz.tar -C /mnt/data/data
+
+cd /mnt/data/data/raw-data
+mv train ../
+mv validation ../
 ```
 
 __Train__
