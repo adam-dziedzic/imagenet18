@@ -149,8 +149,9 @@ def main():
         best_top5 = max(top5, best_top5)
         if args.local_rank == 0:
             if is_best: save_checkpoint(epoch, model, best_top5, optimizer, is_best=True, filename='model_best.pth.tar')
-            phase = dm.get_phase(epoch)
-            if phase: save_checkpoint(epoch, model, best_top5, optimizer, filename=f'sz{phase["bs"]}_checkpoint.path.tar')
+            #phase = dm.get_phase(epoch)
+            #if phase: save_checkpoint(epoch, model, best_top5, optimizer, filename=f'sz{phase["bs"]}_checkpoint.path.tar')
+            save_checkpoint(epoch, model, best_top5, optimizer, filename=f'epoch{epoch}_checkpoint.tar')
 
 
 def train(trn_loader, model, criterion, optimizer, scheduler, epoch):
