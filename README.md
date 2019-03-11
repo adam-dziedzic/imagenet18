@@ -34,11 +34,21 @@ __Train__
 ```
 ulimit -n 4096
 
+# [Single Hyperplane](https://lambdalabs.com/products/hyperplane)
+
 python -m torch.distributed.launch \
 --nproc_per_node=8 --nnodes=1 --node_rank=0 \
 training/train_imagenet_nv.py /mnt/data/data/imagenet \
---fp16 --logdir ./ncluster/runs/lambda-blade --distributed --init-bn0 --no-bn-wd \
---phases "[{'ep': 0, 'sz': 128, 'bs': 512, 'trndir': '-sz/160'}, {'ep': (0, 7), 'lr': (1.0, 2.0)}, {'ep': (7, 13), 'lr': (2.0, 0.25)}, {'ep': 13, 'sz': 224, 'bs': 224, 'trndir': '-sz/320', 'min_scale': 0.087}, {'ep': (13, 22), 'lr': (0.4375, 0.043750000000000004)}, {'ep': (22, 25), 'lr': (0.043750000000000004, 0.004375)}, {'ep': 25, 'sz': 288, 'bs': 128, 'min_scale': 0.5, 'rect_val': True}, {'ep': (25, 28), 'lr': (0.0025, 0.00025)}]"
+--fp16 --logdir ./ncluster/runs/lambda-hyperplane --distributed --init-bn0 --no-bn-wd \
+--phases "[{'ep': 0, 'sz': 128, 'bs': 512, 'trndir': '-sz/160'}, {'ep': (0, 7), 'lr': (1.0, 2.0)}, {'ep': (7, 13), 'lr': (2.0, 0.25)}, {'ep': 13, 'sz': 224, 'bs': 224, 'trndir': '-sz/320', 'min_scale': 0.087}, {'ep': (13, 22), 'lr': (0.4375, 0.043750000000000004)}, {'ep': (22, 25), 'lr': (0.043750000000000004, 0.004375)}, {'ep': 25, 'sz': 288, 'bs': 128, 'min_scale': 0.5, 'rect_val': True}, {'ep': (25, 28), 'lr': (0.0025, 0.00025)}]" --skip-auto-shutdown
+
+# [Lambda GPU Cloud - single instance](https://lambdalabs.com/service/gpu-cloud)
+
+python -m torch.distributed.launch --nproc_per_node=4 --nnodes=1 --node_rank=0 training/train_imagenet_nv.py /home/ubuntu/data/imagenet --workers=4 --fp16 --logdir ./ncluster/runs/lambda-cloud-1-instance --distributed --init-bn0 --no-bn-wd --phases "[{'ep': 0, 'sz': 128, 'bs': 256, 'trndir': '-sz/160'}, {'ep': (0, 8), 'lr': (0.5, 1.0)}, {'ep': (8, 15), 'lr': (1.0, 0.125)}, {'ep': 15, 'sz': 224, 'bs': 112, 'trndir': '-sz/320', 'min_scale': 0.087}, {'ep': (15, 25), 'lr': (0.22, 0.022)}, {'ep': (25, 29), 'lr': (0.022, 0.0022)}, {'ep': 29, 'sz': 288, 'bs': 64, 'min_scale': 0.5, 'rect_val': True}, {'ep': (29, 32), 'lr': (0.00125, 0.000125)}]" --skip-auto-shutdown
+
+
+python -m torch.distributed.launch --nproc_per_node=4 --nnodes=1 --node_rank=0 training/train_imagenet_nv.py /home/ubuntu/data/imagenet --workers=4 --fp16 --logdir ./ncluster/runs/lambda-cloud-1-instance --distributed --init-bn0 --no-bn-wd --phases "[{'ep': 0, 'sz': 128, 'bs': 256, 'trndir': '-sz/160'}, {'ep': (0, 8), 'lr': (0.5, 1.0)}, {'ep': (8, 15), 'lr': (1.0, 0.25)}, {'ep': 15, 'sz': 224, 'bs': 112, 'trndir': '-sz/320', 'min_scale': 0.087}, {'ep': (15, 25), 'lr': (0.25, 0.025)}, {'ep': (25, 29), 'lr': (0.025, 0.0025)}, {'ep': 29, 'sz': 288, 'bs': 64, 'min_scale': 0.5, 'rect_val': True}, {'ep': (29, 32), 'lr': (0.00125, 0.000125)}]" --skip-auto-shutdown
+
 ```
 * __ulimit__: to avoid "OSError: [Errno 24] Too many open files with 0.4.1".
 __nproc_per_node__: number of GPUs on your local machine.  
@@ -49,7 +59,7 @@ __phases__: training schedule. Copied from the "one machine" setting in the orig
 __Gather Results__
 ```
 python dawn/prepare_dawn_tsv.py \
---events_path=ncluster/runs/lambda-blade-8/events.out.tfevents.1547529175.lambda-server
+--events_path=ncluster/runs/path-to-logdir/events.out.tfevents.xxx
 ```
 __events_path__: path to the event file. Should be found inside of the __logdir__.
 
