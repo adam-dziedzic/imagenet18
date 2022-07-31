@@ -479,17 +479,34 @@ def accuracy(output, target, topk=(1,)):
             corrrect_ks]
 
 
+# def correct(output, target, topk=(1,)):
+#     """Computes the accuracy@k for the specified values of k"""
+#     maxk = max(topk)
+#     _, pred = output.topk(maxk, 1, True, True)
+#     pred = pred.t()
+#     correct = pred.eq(target.view(1, -1).expand_as(pred))
+#     res = []
+#     for k in topk:
+#         correct_k = correct[:k].view(-1).sum(0, keepdim=True)
+#         res.append(correct_k)
+#     return res
+
 def correct(output, target, topk=(1,)):
-    """Computes the accuracy@k for the specified values of k"""
-    maxk = max(topk)
-    _, pred = output.topk(maxk, 1, True, True)
-    pred = pred.t()
-    correct = pred.eq(target.view(1, -1).expand_as(pred))
-    res = []
-    for k in topk:
-        correct_k = correct[:k].view(-1).sum(0, keepdim=True)
-        res.append(correct_k)
-    return res
+    """Computes the accuracy over the k top predictions for the specified values of k"""
+    with torch.no_grad():
+        maxk = max(topk)
+        batch_size = target.size(0)
+
+        _, pred = output.topk(maxk, 1, True, True)
+        pred = pred.t()
+        correct = pred.eq(target.view(1, -1).expand_as(pred))
+
+
+        res = []
+        for k in topk:
+            correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
+            res.append(correct_k.mul_(100.0 / batch_size))
+        return res
 
 
 def listify(p=None, q=None):
