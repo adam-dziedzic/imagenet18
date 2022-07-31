@@ -26,6 +26,9 @@ import experimental_utils
 import dist_utils
 from logger import TensorboardLogger, FileLogger
 from meter import AverageMeter, NetworkMeter, TimeMeter
+import socket
+
+socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 
 def get_parser():
@@ -500,7 +503,6 @@ def correct(output, target, topk=(1,)):
         _, pred = output.topk(maxk, 1, True, True)
         pred = pred.t()
         correct = pred.eq(target.view(1, -1).expand_as(pred))
-
 
         res = []
         for k in topk:
