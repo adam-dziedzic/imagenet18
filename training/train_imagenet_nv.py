@@ -34,7 +34,7 @@ def get_parser():
                         default="/scratch/ssd002/datasets/imagenet256")
     parser.add_argument('--phases', type=str,
                         help='Specify epoch order of data resize and learning rate schedule: [{"ep":0,"sz":128,"bs":64},{"ep":5,"lr":1e-2}]')
-    parser.add_argument('--save_dir', type=str,
+    parser.add_argument('--save_path', type=str,
                         default='/ssd003/home/ady/imagenet_fast',
                         help='Directory to save logs and models.')
     parser.add_argument('-j', '--workers', default=8, type=int, metavar='N',
