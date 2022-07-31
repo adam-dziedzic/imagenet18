@@ -28,7 +28,8 @@ from logger import TensorboardLogger, FileLogger
 from meter import AverageMeter, NetworkMeter, TimeMeter
 import socket
 
-socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+# socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 
 def get_parser():

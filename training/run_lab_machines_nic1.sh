@@ -2,6 +2,7 @@ timestamp=$(date +%Y-%m-%d-%H-%M-%S-%N)
 CUDA_VISIBLE_DEVICES=0,1,2,3
 ulimit -n 4096
 nohup python -m torch.distributed.launch \
+  --master_port 25901 \
   --nproc_per_node=4 --nnodes=1 --node_rank=0 \
   train_imagenet_nv.py \
   --data /home/nicolas/data/imagenet \
@@ -11,8 +12,3 @@ nohup python -m torch.distributed.launch \
   --skip-auto-shutdown \
   >>train_imagenet_main_${timestamp}.txt 2>&1 &
 echo train_imagenet_main_${timestamp}.txt
-[2] 25920
-(python39) ady@nic3:~/code2/imagenet18/training$ echo train_imagenet_main_${timestamp}.txt
-train_imagenet_main_2022-07-31-17-13-17-710460612.txt
-
-
