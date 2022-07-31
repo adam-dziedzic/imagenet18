@@ -70,7 +70,8 @@ def get_parser():
     parser.add_argument('--local_rank', default=0, type=int,
                         help='Used for multi-process training. Can either be manually set ' +
                              'or automatically set by using \'python -m multiproc\'.')
-    parser.add_argument('--logdir', default='', type=str,
+    parser.add_argument('--logdir', default='/ssd003/home/ady/imagenet_fast',
+                        type=str,
                         help='where logs go')
     parser.add_argument('--skip-auto-shutdown', action='store_true',
                         help='Shutdown instance at the end of training or failure')
